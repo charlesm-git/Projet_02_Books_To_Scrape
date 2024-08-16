@@ -4,16 +4,16 @@ import re
 import csv
 
 
-def product_page_scraping(url):
+def product_page_scraping(page_url):
     """
     Scrape a specific page of the website Books To Scrape
 
-    :param url: URL of the page to scrape
+    :param page_url: URL of the page to scrape
     :return: list of all the useful information
     """
 
     # Get the HTML content of the url and parse it with a Beautifulsoup html parser
-    page = requests.get(url)
+    page = requests.get(page_url)
     soup = BeautifulSoup(page.content, 'html.parser')
 
     # Extraction of all the product properties
@@ -22,7 +22,10 @@ def product_page_scraping(url):
     title = soup.find('div', class_='col-sm-6 product_main').find('h1').get_text()
 
     # Get the description of the book
-    product_description = soup.find('div', id='product_description').find_next('p').get_text()
+    # Initialized as 'no description available', modified if there is one
+    product_description = "No description available for this book"
+    if soup.find('div', id='product_description') is not None:
+        product_description = soup.find('div', id='product_description').find_next('p').get_text()
 
     # Scrape the table shown on the product page to extract the UPC, the price with and without taxes
     # and the number of books available

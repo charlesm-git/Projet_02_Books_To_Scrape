@@ -6,6 +6,18 @@ from url_treatment import url_cleaning
 import csv
 
 
+def csv_writer(csv_content, csv_name, storage_folder):
+
+    # put everything in a csv file
+    header = ["product_page_url", "title", "product_description", "category", "UPC", "price_excluding_tax",
+              "price_including_tax", "number_available", "review_rating", "image_url"]
+
+    with open(f'{storage_folder}/{csv_name}.csv', 'w', encoding='utf-8', newline='') as csv_file:
+        writer = csv.writer(csv_file, delimiter=',')
+        writer.writerow(header)
+        writer.writerows(csv_content)
+
+
 def category_page_scraping(url_category):
     # Return variable : contain the information of all the books of a category
     all_books_pages_content = []
@@ -57,24 +69,3 @@ def category_page_scraping(url_category):
             all_books_pages_content.append(line)
 
     return all_books_pages_content
-
-
-def csv_writer(csv_content):
-    # put everything in a csv file
-    header = ["product_page_url", "title", "product_description", "category", "UPC", "price_excluding_tax",
-              "price_including_tax", "number_available", "review_rating", "image_url"]
-
-    with open('page_content.csv', 'w', newline="") as csv_file:
-        writer = csv.writer(csv_file, delimiter=',')
-        writer.writerow(header)
-        writer.writerows(csv_content)
-
-
-if __name__ == "__main__":
-    # URL to scrape
-    url_to_scrape = "https://books.toscrape.com/catalogue/category/books/fantasy_19/index.html"
-
-    category_content = category_page_scraping(url_to_scrape)
-    print(category_content)
-
-    csv_writer(category_content)
