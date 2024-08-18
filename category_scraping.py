@@ -6,19 +6,19 @@ from url_treatment import url_cleaning
 import csv
 
 
-def csv_writer(csv_content, csv_name, storage_folder):
+def csv_writer(csv_content, category_name, main_storage_folder):
 
     # put everything in a csv file
     header = ["product_page_url", "title", "product_description", "category", "UPC", "price_excluding_tax",
               "price_including_tax", "number_available", "review_rating", "image_url"]
 
-    with open(f'{storage_folder}/{csv_name}.csv', 'w', encoding='utf-8', newline='') as csv_file:
+    with open(f'{main_storage_folder}/{category_name}.csv', 'w', encoding='utf-8', newline='') as csv_file:
         writer = csv.writer(csv_file, delimiter=',')
         writer.writerow(header)
         writer.writerows(csv_content)
 
 
-def category_page_scraping(url_category):
+def category_page_scraping(url_category, main_storage_folder):
     # Return variable : contain the information of all the books of a category
     all_books_pages_content = []
 
@@ -50,9 +50,10 @@ def category_page_scraping(url_category):
     # Loops over all the url to get the content of each book pages
     for book_url in books_url_list:
         # Call of the page_scraping function
-        page_content = product_page_scraping(book_url)
+        page_content = product_page_scraping(book_url, main_storage_folder)
         # Adding the url of the page to the results in first position
         page_content.insert(0, book_url)
+        print(page_content)
         # Add the results of the page scraping to a common list
         all_books_pages_content.append(page_content)
 
@@ -64,7 +65,7 @@ def category_page_scraping(url_category):
         next_page_relative_url = category_soup.find('li', class_='next').find('a').get('href')
         next_page_url = urljoin(url_category, next_page_relative_url)
         # Recursive of the category_page_scraping function to go over all the pages of a category
-        next_page_content = category_page_scraping(next_page_url)
+        next_page_content = category_page_scraping(next_page_url, main_storage_folder)
         for line in next_page_content:
             all_books_pages_content.append(line)
 
