@@ -1,0 +1,22 @@
+# created by virtualenv automatically
+
+# Virtual environment
+env/
+
+# IDE
+.idea/
+
+# Python Bitcode
+__pycache__/
+
+# Results
+data_*/
+*.csv
+*.jpg
+
+# Testing code
+TEST.py
+TEST/
+
+# Logs
+*.log
