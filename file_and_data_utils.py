@@ -23,20 +23,6 @@ def txt_cleaning(text):
     return cleaned_text
 
 
-def txt_shortening(text):
-    """
-    Shorten a text to 130 characters if its length is longer
-
-    :param text: text that could need to be shortened
-    :return: text shortened
-    """
-    max_length = 130
-    # If the length of the text exceed 150 characters, shorten it to 150
-    if len(text) > max_length:
-        text = text[:max_length]
-    return text
-
-
 def url_cleaning(url_to_clean):
     """
     Function used to clean relative URL by removing '../../..' segments
@@ -86,12 +72,12 @@ def folder_creation(category_names):
     return main_storage_folder
 
 
-def image_download(image_url, image_name, image_category, image_upc, main_storage_folder):
+def image_download(image_url, image_category, image_upc, main_storage_folder):
     """
     Create and store in the right folder the file of a given image (url)
 
     :param image_url: url of the image to download
-    :param image_name: name wanted for the image
+    :param image_upc: Universal Product Code of the book
     :param image_category: category of the book, Necessary to store the image in the right folder
     :param main_storage_folder: name of the main storage folder 'data_...'
     """
@@ -99,12 +85,9 @@ def image_download(image_url, image_name, image_category, image_upc, main_storag
     image = requests.get(image_url)
     # Cleans the name and category provided to make sure that it suits all requirements (forbidden
     # characters, no space, etc.)
-    image_name = txt_cleaning(image_name)
-    image_name = txt_shortening(image_name)
-    image_name = image_name.replace(' ', '_')
     image_category = image_category.replace(' ', '_')
     # Creation of the file and download of the image in the right folder
-    with (open(f'{main_storage_folder}/images/{image_category}/{image_name}_{image_upc}.jpg', 'wb') as
+    with (open(f'{main_storage_folder}/images/{image_category}/{image_upc}.jpg', 'wb') as
           image_file):
         image_file.write(image.content)
 

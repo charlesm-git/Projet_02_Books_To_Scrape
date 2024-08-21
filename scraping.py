@@ -192,7 +192,7 @@ def product_page_scraping(page_url, main_storage_folder):
     image_url = urljoin(base_url, image_relative_url)
 
     # Download the book's cover
-    image_download(image_url, title, category, universal_product_code, main_storage_folder)
+    image_download(image_url, category, universal_product_code, main_storage_folder)
 
     return [title,
             product_description,
